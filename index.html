@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function q1() {
+            let name = $('#input_name').val();
+            let number = $('#inputGroupSelect01').val();
+            let adress = $('#input_adress').val();
+            let phone = $('#input_phone').val();
+
+            if (name == '') {
+                alert('이름을 입력해주세요');
+                $('#input_name').focus();
+                return;
+            } else if (number == '') {
+                alert('수량을 입력해주세요');
+                $('#inputGroupSelect01').focus();
+                return;
+            } else if (adress == '') {
+                alert('주소를 입력해주세요');
+                $('#input_adress').focus();
+                return;
+            } else if (phone == '') {
+                alert('전화번호를 입력해주세요');
+                $('#input_phone').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/orders",
+                data: { name_give: name, number_give: number, adress_give: adress, phone_give: phone },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/orders",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let orders = response['orders'];
+                        for (let i = 0; i < orders.length; i++) {
+                            make_card(orders[i]['name'], orders[i]['number'], orders[i]['adress'],orders[i]['phone']);
+                        }
+                    } else {
+                        alert('주문정보를 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(name, number, adress, phone) {
+            let temp_html = `<tr>
+                                <td>${name}</td>
+                                <td>${number}</td>
+                                <td>${adress}</td>
+                                <td>${phone}</td>
+                            </tr>`;
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+        <title>플랜테리어_공기정화식물 세트 구매하기
+    </title>
+    <style>
+        .wrap {
+            margin: 10px auto;
+            width: 600px;
+        }
+        .btn-primary {
+            margin : auto auto;
+        }
+        .image {
+            margin : auto auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <img class="image" src="http://www.youngnong.co.kr/news/photo/201904/23858_17412_4729.jpg" />
+        <hr>
+        <h2>[플랜테리어] 공기정화식물 세트 <span style="font-size:medium"> 가격 : 33,000원/개</span></h2>
+        <h3>싱고니움+몬스테라 +스투키 (한정수량 : 100개)</h3>
+        <span style="font-size: small;">요즘은 반려식물의 시대! 집안에 예쁘거나 주목 받는 식물/화분으로 인테리어에 포인트를 준다는 의미의 플렌테리어!(플랜트+인테리어) 플랜테리어에 관심 있으시다면,
+                        공기정화식물 3종 기획 세트로 3가지 식물을 저렴한 가격에 만나보세요!</span>
+        <div class="input-group input-group-sm mb-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">주문자 이름</span>
+            </div>
+            <input id="input_name" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">수량
+              </label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01">
+              <option selected>--수량을 선택하세요--</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+
+        <div class="input-group input-group-sm mb-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">주소</span>
+            </div>
+            <input id="input_adress" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+                <div class="input-group input-group-sm mb-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">전화번호</span>
+            </div>
+            <input id="input_phone" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>       
+     
+        <button onclick="q1()"type="button" class="btn btn-primary">주문하기</button>
+    </div>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">주문자이름</th>
+            <th scope="col">수량</th>
+            <th scope="col">주소</th>
+            <th scope="col">전화번호</th>
+          </tr>
+        </thead>
+        <tbody id="orders-box">
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+        </tbody>
+      </table>
+</body>
+
+</html>
